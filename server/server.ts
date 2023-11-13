@@ -1,8 +1,11 @@
 import * as Path from 'node:path'
 import express from 'express'
 import cors, { CorsOptions } from 'cors'
+import mountains from './routes/mountains'
 
 const server = express()
+
+server.use('/api/v1/mountains100', mountains)
 
 server.get('/api/v1/greeting', (req, res) => {
   const greetings = ['hola', 'hi', 'hello', 'howdy']
