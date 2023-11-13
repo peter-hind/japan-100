@@ -30,6 +30,7 @@ h3 {
 
 .map-container {
   height: 40vh;
+  min-height: 500px;
   width: 60%;
   margin: 50px auto;
   border-radius: 30px;
