@@ -73,3 +73,26 @@ h3 {
 .feature-icon {
   font-size: 50px;
 }
+
+.layer-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  margin: auto;
+}
+
+.layer-icon {
+  margin: 10px;
+}
+
+.layer-icon img {
+  height: 70px;
+  width: 70px;
+  transition: all 0.3s ease;
+}
+
+.layer-icon img:hover {
+  transform: scale(1.1);
+}

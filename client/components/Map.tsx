@@ -29,6 +29,11 @@ function Map(props: Props) {
         center: [lng, lat],
         zoom: zoom,
       })
+      if (props.layer !== '') {
+        map.current.on('idle', () =>
+          map.current?.setLayoutProperty(props.layer, 'visibility', 'visible')
+        )
+      }
       map.current.on('move', () => {
         if (map.current) {
           setLng(parseFloat(map.current.getCenter().lng.toFixed(4)))
