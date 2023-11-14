@@ -1,6 +1,10 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
-function LayerSelect() {
+interface Props {
+  currentLayer: string
+  changeLayer: (newLayer: string) => void
+}
+function LayerSelect(props: Props) {
   const [mountainHovered, setMountainHovered] = useState(false)
   const [castleHovered, setCastleHovered] = useState(false)
   const [onsenHovered, setOnsenHovered] = useState(false)
@@ -19,6 +23,9 @@ function LayerSelect() {
           alt="Bland Mountain Logo"
           onMouseOver={() => setMountainHovered(true)}
           onMouseOut={() => setMountainHovered(false)}
+          onClick={() => {
+            props.changeLayer('100-mountains')
+          }}
         />
       </div>
       <div className="layer-icon">

@@ -1,8 +1,6 @@
-import { useState, useEffect, useRef, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+
 import mapboxgl, { Map as MapboxMap } from 'mapbox-gl'
-import MapFeature from '../../models/mapfeature'
-import Feature from '../../models/feature'
 
 mapboxgl.accessToken =
   'pk.eyJ1Ijoic29qb2JvNDciLCJhIjoiY2xmZ2RnYjhuMHZ4dDNycGRma2FjOXd1NSJ9.tCJRJZhcFmneyT6Tp4ZJOg'
@@ -11,7 +9,7 @@ type MapContainerRef = HTMLDivElement | null
 
 interface Props {
   onFeatureClick: (data: any) => void
-  layer: string
+  currentLayer: string
 }
 
 function Map(props: Props) {
@@ -21,7 +19,9 @@ function Map(props: Props) {
   const [lat, setLat] = useState(38.4968)
   const [zoom, setZoom] = useState(4.7)
 
+  console.log('line 22', props.currentLayer)
   useEffect(() => {
+    console.log('line 24', props.currentLayer)
     if (!map.current) {
       map.current = new mapboxgl.Map({
         container: 'mapContainerId',
@@ -29,10 +29,16 @@ function Map(props: Props) {
         center: [lng, lat],
         zoom: zoom,
       })
-      if (props.layer !== '') {
+      if (props.currentLayer !== '') {
+        console.log('hello')
         map.current.on('idle', () =>
-          map.current?.setLayoutProperty(props.layer, 'visibility', 'visible')
+          map.current?.setLayoutProperty(
+            props.currentLayer,
+            'visibility',
+            'visible'
+          )
         )
+        console.log(props.currentLayer)
       }
       map.current.on('move', () => {
         if (map.current) {
@@ -41,7 +47,7 @@ function Map(props: Props) {
           setZoom(parseFloat(map.current.getZoom().toFixed(2)))
         }
       })
-      map.current.on('click', `${props.layer}`, function (e) {
+      map.current.on('click', `${props.currentLayer}`, function (e) {
         if (e.features && e.features.length) {
           const feature: any = e.features[0]
           console.log(feature)
@@ -61,7 +67,7 @@ function Map(props: Props) {
         }
       })
     }
-  }, [lng, lat, zoom])
+  }, [lat, lng, zoom, props.currentLayer])
 
   return (
     <>
