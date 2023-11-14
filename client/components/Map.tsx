@@ -22,6 +22,17 @@ function Map(props: Props) {
   console.log('line 22', props.currentLayer)
   useEffect(() => {
     console.log('line 24', props.currentLayer)
+    if (props.currentLayer !== '') {
+      console.log('hello')
+      map.current?.on('idle', () =>
+        map.current?.setLayoutProperty(
+          props.currentLayer,
+          'visibility',
+          'visible'
+        )
+      )
+      console.log(props.currentLayer)
+    }
     if (!map.current) {
       map.current = new mapboxgl.Map({
         container: 'mapContainerId',
@@ -29,17 +40,7 @@ function Map(props: Props) {
         center: [lng, lat],
         zoom: zoom,
       })
-      if (props.currentLayer !== '') {
-        console.log('hello')
-        map.current.on('idle', () =>
-          map.current?.setLayoutProperty(
-            props.currentLayer,
-            'visibility',
-            'visible'
-          )
-        )
-        console.log(props.currentLayer)
-      }
+
       map.current.on('move', () => {
         if (map.current) {
           setLng(parseFloat(map.current.getCenter().lng.toFixed(4)))
@@ -67,7 +68,7 @@ function Map(props: Props) {
         }
       })
     }
-  }, [lat, lng, zoom, props.currentLayer])
+  }, [lat, lng, zoom, props])
 
   return (
     <>
