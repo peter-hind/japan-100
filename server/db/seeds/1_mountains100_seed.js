@@ -1,7 +1,4 @@
 export async function seed(knex) {
-  // Deletes ALL existing entries
-  await knex('mountains100').del()
-
   // Inserts seed entries
   await knex('mountains100').insert([
     {

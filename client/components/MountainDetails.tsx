@@ -1,43 +1,45 @@
 import { useState } from 'react'
 import Map from './Map.tsx'
 import type MapFeature from '../../models/mapfeature.ts'
-import { getMountain } from '../apiClient.ts'
+import { getMountain, climbMountain } from '../apiClient.ts'
 import Mountain from '../../models/mountain.ts'
+import { useAuth0 } from '@auth0/auth0-react'
 
-function MountainDetails() {
-  const [featureData, setFeatureData] = useState<Mountain | null>(null)
+interface Props {
+  featureData: any
+}
 
-  async function handleFeatureClick(data: MapFeature): Promise<void> {
-    const mountain = await getMountain(data.properties.title)
-    setFeatureData(mountain)
-  }
-
+function MountainDetails(props: Props) {
+  const { user, isAuthenticated, isLoading } = useAuth0()
+  console.log('mountaindeets', user)
   return (
     <div>
-      <Map onFeatureClick={handleFeatureClick} layer={'100-mountains'} />
       <h2>Mountain Details</h2>
-      {featureData && (
+      {props.featureData && (
         <div className="feature-container">
           <div className="feature-box">
             <div className="feature-icon">⛰️</div>
             <h3>Mountain Name:</h3>
-            {featureData.name}
+            {props.featureData.name}
           </div>
           <div className="feature-box">
             <div className="feature-icon">🗺️</div>
             <h3>Prefecture:</h3>
-            {featureData.prefecture}
+            {props.featureData.prefecture}
           </div>
           <div className="feature-box">
             <div className="feature-icon">🔝</div>
             <h3>Elevation:</h3>
-            {featureData.elevation_m}m
+            {props.featureData.elevation_m}m
           </div>
           <div className="feature-box">
             <div className="feature-icon">📒</div>
             <h3>Description:</h3>
-            {featureData.description}
+            {props.featureData.description}
           </div>
+          <button onClick={() => climbMountain(user.sub, props.featureData.id)}>
+            Climbed?
+          </button>
         </div>
       )}
     </div>

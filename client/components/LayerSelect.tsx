@@ -16,7 +16,7 @@ function LayerSelect(props: Props) {
       <div className="layer-icon">
         <img
           src={
-            mountainHovered
+            mountainHovered || props.currentLayer === '100-mountains'
               ? '/image/mountain-colour.svg'
               : '/image/mountain-mono.svg'
           }

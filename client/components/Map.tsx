@@ -33,6 +33,25 @@ function Map(props: Props) {
       )
       console.log(props.currentLayer)
     }
+    map.current?.on('click', `${props.currentLayer}`, function (e) {
+      if (e.features && e.features.length) {
+        const feature: any = e.features[0]
+        console.log(feature)
+        props.onFeatureClick(feature)
+        const coordinates = feature.geometry.coordinates
+        console.log(coordinates)
+        map.current?.flyTo({
+          center: coordinates,
+          zoom: 12,
+          pitch: 75,
+          speed: 0.8,
+          curve: 1,
+        })
+      } else {
+        // Handle the case when no features are found
+        console.log('No features found at this point.')
+      }
+    })
     if (!map.current) {
       map.current = new mapboxgl.Map({
         container: 'mapContainerId',
@@ -46,25 +65,6 @@ function Map(props: Props) {
           setLng(parseFloat(map.current.getCenter().lng.toFixed(4)))
           setLat(parseFloat(map.current.getCenter().lat.toFixed(4)))
           setZoom(parseFloat(map.current.getZoom().toFixed(2)))
-        }
-      })
-      map.current.on('click', `${props.currentLayer}`, function (e) {
-        if (e.features && e.features.length) {
-          const feature: any = e.features[0]
-          console.log(feature)
-          props.onFeatureClick(feature)
-          const coordinates = feature.geometry.coordinates
-          console.log(coordinates)
-          map.current?.flyTo({
-            center: coordinates,
-            zoom: 12,
-            pitch: 75,
-            speed: 0.8,
-            curve: 1,
-          })
-        } else {
-          // Handle the case when no features are found
-          console.log('No features found at this point.')
         }
       })
     }
