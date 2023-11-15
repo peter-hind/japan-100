@@ -11,13 +11,12 @@ const Profile = () => {
   }
 
   isAuthenticated ? handleUser(user as User) : null
+
   return (
     isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name} />
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
-        {JSON.stringify(user, null, 2)}
+      <div className="profile-bar">
+        <img className="profile-picture" src={user?.picture} alt={user?.name} />
+        <h2>{user?.name}</h2>
       </div>
     )
   )

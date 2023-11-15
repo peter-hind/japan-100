@@ -19,9 +19,7 @@ function Map(props: Props) {
   const [lat, setLat] = useState(38.4968)
   const [zoom, setZoom] = useState(4.7)
 
-  console.log('line 22', props.currentLayer)
   useEffect(() => {
-    console.log('line 24', props.currentLayer)
     if (props.currentLayer !== '') {
       console.log('hello')
       map.current?.on('idle', () =>
@@ -31,7 +29,6 @@ function Map(props: Props) {
           'visible'
         )
       )
-      console.log(props.currentLayer)
     }
     map.current?.on('click', `${props.currentLayer}`, function (e) {
       if (e.features && e.features.length) {

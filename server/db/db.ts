@@ -29,6 +29,13 @@ export function updateUser(user: User) {
 }
 
 export async function climbMountain(currentUser: string, mountain: number) {
+  const climbed = await db('users_mountains')
+    .where('sub', currentUser)
+    .where('peak_id', mountain)
+    .first()
+  if (climbed) {
+    return null
+  }
   return db('users_mountains')
     .where('sub', currentUser)
     .insert({
@@ -36,4 +43,12 @@ export async function climbMountain(currentUser: string, mountain: number) {
       peak_id: mountain,
     })
     .returning('*')
+}
+
+export async function fetchClimberMountains(sub: string) {
+  return db
+    .select('users_mountains.peak_id')
+    .from('users_mountains')
+    .where('sub', sub)
+    .join('mountains100', 'users_mountains.peak_id', 'mountains100.id')
 }

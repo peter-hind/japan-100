@@ -2,6 +2,7 @@ body {
   width: 100%;
   max-width: 2000px;
   margin: auto;
+  font-family: 'Poppins', sans-serif;
 }
 
 .header {
@@ -66,13 +67,36 @@ h3 {
   justify-content: center;
   align-items: center;
   flex: 1;
+  min-width: 0;
   border-radius: 15px;
   padding: 15px;
   text-align: center;
 }
 
+.checkoff-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  margin: auto;
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  background-color: bisque;
+  max-width: 40vw;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
 .feature-icon {
   font-size: 50px;
+}
+
+.climbed {
+  min-width: 152.52px;
 }
 
 .layer-select {
@@ -86,6 +110,9 @@ h3 {
 
 .layer-icon {
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .layer-icon img {
@@ -96,4 +123,40 @@ h3 {
 
 .layer-icon img:hover {
   transform: scale(1.1);
+}
+
+.profile-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 100px;
+  background-color: bisque;
+}
+
+.logo {
+  margin-top: 100px;
+}
+
+.login-button {
+  padding: 20px 60px;
+  border-radius: 40%;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.profile-picture {
+  margin: 25px;
+  size: 96px;
 }

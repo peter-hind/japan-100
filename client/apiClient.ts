@@ -12,6 +12,12 @@ export async function getMountain(title: string): Promise<Mountain> {
   return res.body
 }
 
+export async function getClimberMountains(sub: string): Promise<any> {
+  const res = await request.get(`/api/v1/mountains100/user/${sub}`)
+  console.log('apiclient usermountains', res.body)
+  return res.body
+}
+
 export async function handleUser(user: User): Promise<any> {
   console.log('Apiclient', user)
   await request
@@ -24,9 +30,9 @@ export async function climbMountain(
   sub: string,
   mountain: number
 ): Promise<any> {
-  console.log('Apiclient', sub, mountain)
-  await request
+  const res = await request
     .post('/api/v1/mountains100')
     .set('Content-Type', 'application/json')
     .send({ sub, mountain })
+  return res.body
 }

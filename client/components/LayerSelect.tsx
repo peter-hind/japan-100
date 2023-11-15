@@ -27,6 +27,7 @@ function LayerSelect(props: Props) {
             props.changeLayer('100-mountains')
           }}
         />
+        <h3>Mountains</h3>
       </div>
       <div className="layer-icon">
         <img
@@ -39,6 +40,7 @@ function LayerSelect(props: Props) {
           onMouseOver={() => setCastleHovered(true)}
           onMouseOut={() => setCastleHovered(false)}
         />
+        <h3>Castles</h3>
       </div>
       <div className="layer-icon">
         <img
@@ -49,6 +51,7 @@ function LayerSelect(props: Props) {
           onMouseOver={() => setOnsenHovered(true)}
           onMouseOut={() => setOnsenHovered(false)}
         />
+        <h3>Onsen</h3>
       </div>
       <div className="layer-icon">
         <img
@@ -61,6 +64,7 @@ function LayerSelect(props: Props) {
           onMouseOver={() => setShrineHovered(true)}
           onMouseOut={() => setShrineHovered(false)}
         />
+        <h3>Shrines</h3>
       </div>
       <div className="layer-icon">
         <img
@@ -73,6 +77,7 @@ function LayerSelect(props: Props) {
           onMouseOver={() => setBlossomHovered(true)}
           onMouseOut={() => setBlossomHovered(false)}
         />
+        <h3>Blossoms</h3>
       </div>
     </div>
   )

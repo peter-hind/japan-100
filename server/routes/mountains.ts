@@ -1,5 +1,5 @@
 import express from 'express'
-import { fetchMountain, climbMountain } from '../db/db'
+import { fetchMountain, climbMountain, fetchClimberMountains } from '../db/db'
 
 const router = express.Router()
 
@@ -16,6 +16,24 @@ router.get('/:title', async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: 'An error occurred while getting posts',
+      error: err instanceof Error ? err.message : 'Unknown error',
+    })
+  }
+})
+
+router.get('/user/:sub', async (req, res) => {
+  try {
+    const sub = req.params.sub
+    console.log(sub)
+    const mountains = await fetchClimberMountains(sub)
+    if (!mountains) {
+      res.status(404).json({ message: 'Mountains not found' })
+      return
+    }
+    res.status(200).json(mountains)
+  } catch (err) {
+    res.status(500).json({
+      message: 'An error occurred while getting list',
       error: err instanceof Error ? err.message : 'Unknown error',
     })
   }

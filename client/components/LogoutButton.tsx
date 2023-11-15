@@ -6,6 +6,7 @@ const LogoutButton = () => {
 
   return (
     <button
+      className="login-button"
       onClick={() =>
         logout({ logoutParams: { returnTo: 'http://localhost:5173' } })
       }

@@ -24,7 +24,9 @@ function HomePage() {
     <>
       <LayerSelect currentLayer={layer} changeLayer={handleIconClick} />
       <Map onFeatureClick={handleFeatureClick} currentLayer={layer} />
-      <MountainDetails featureData={featureData} />
+      {layer === '100-mountains' ? (
+        <MountainDetails featureData={featureData} />
+      ) : null}
     </>
   )
 }
