@@ -1,54 +1,68 @@
 import { useState, useEffect, useRef } from 'react'
-
 import mapboxgl, { Map as MapboxMap } from 'mapbox-gl'
+import { Feature } from '../../models/feature'
 
 mapboxgl.accessToken =
   'pk.eyJ1Ijoic29qb2JvNDciLCJhIjoiY2xmZ2RnYjhuMHZ4dDNycGRma2FjOXd1NSJ9.tCJRJZhcFmneyT6Tp4ZJOg'
 
 type MapContainerRef = HTMLDivElement | null
-
 interface Props {
   onFeatureClick: (data: any) => void
   currentLayer: string
+  oldLayer: string
 }
 
-function Map(props: Props) {
+function Map({ onFeatureClick, currentLayer, oldLayer }: Props) {
   const mapContainer = useRef<MapContainerRef>(null)
   const map = useRef<MapboxMap | null>(null)
   const [lng, setLng] = useState(136.068)
   const [lat, setLat] = useState(38.4968)
   const [zoom, setZoom] = useState(4.7)
 
+  const hasClickListener = useRef(false)
+
   useEffect(() => {
-    if (props.currentLayer !== '') {
-      console.log('hello')
-      map.current?.on('idle', () =>
-        map.current?.setLayoutProperty(
-          props.currentLayer,
-          'visibility',
-          'visible'
-        )
-      )
-    }
-    map.current?.on('click', `${props.currentLayer}`, function (e) {
+    const clickListener = (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
       if (e.features && e.features.length) {
-        const feature: any = e.features[0]
+        const feature: Feature = e.features[0]
         console.log(feature)
-        props.onFeatureClick(feature)
+        onFeatureClick(feature)
         const coordinates = feature.geometry.coordinates
         console.log(coordinates)
         map.current?.flyTo({
-          center: coordinates,
+          center: [coordinates[0], coordinates[1]],
           zoom: 12,
           pitch: 75,
           speed: 0.8,
           curve: 1,
         })
-      } else {
-        // Handle the case when no features are found
-        console.log('No features found at this point.')
       }
-    })
+    }
+
+    if (!hasClickListener.current) {
+      map.current?.on('click', currentLayer, clickListener)
+      hasClickListener.current = true
+    }
+
+    return () => {
+      map.current?.off('click', currentLayer, clickListener)
+      hasClickListener.current = false
+    }
+  }, [currentLayer])
+
+  useEffect(() => {
+    if (currentLayer !== '') {
+      map.current?.on(
+        'idle',
+        () =>
+          oldLayer !== '' &&
+          map.current?.setLayoutProperty(oldLayer, 'visibility', 'none')
+      )
+      map.current?.on('idle', () =>
+        map.current?.setLayoutProperty(currentLayer, 'visibility', 'visible')
+      )
+    }
+
     if (!map.current) {
       map.current = new mapboxgl.Map({
         container: 'mapContainerId',
@@ -56,16 +70,8 @@ function Map(props: Props) {
         center: [lng, lat],
         zoom: zoom,
       })
-
-      map.current.on('move', () => {
-        if (map.current) {
-          setLng(parseFloat(map.current.getCenter().lng.toFixed(4)))
-          setLat(parseFloat(map.current.getCenter().lat.toFixed(4)))
-          setZoom(parseFloat(map.current.getZoom().toFixed(2)))
-        }
-      })
     }
-  }, [lat, lng, zoom, props])
+  })
 
   return (
     <>

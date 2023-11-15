@@ -1,10 +1,12 @@
 import { Dispatch, SetStateAction, useState } from 'react'
+import { cursorTo } from 'readline'
 
 interface Props {
   currentLayer: string
   changeLayer: (newLayer: string) => void
+  setFeatureData: Dispatch<SetStateAction<any>>
 }
-function LayerSelect(props: Props) {
+function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
   const [mountainHovered, setMountainHovered] = useState(false)
   const [castleHovered, setCastleHovered] = useState(false)
   const [onsenHovered, setOnsenHovered] = useState(false)
@@ -16,15 +18,16 @@ function LayerSelect(props: Props) {
       <div className="layer-icon">
         <img
           src={
-            mountainHovered || props.currentLayer === '100-mountains'
+            mountainHovered || currentLayer === '100-mountains'
               ? '/image/mountain-colour.svg'
               : '/image/mountain-mono.svg'
           }
           alt="Bland Mountain Logo"
-          onMouseOver={() => setMountainHovered(true)}
-          onMouseOut={() => setMountainHovered(false)}
+          onMouseOver={() => setMountainHovered((prev) => !prev)}
+          onMouseOut={() => setMountainHovered((prev) => !prev)}
           onClick={() => {
-            props.changeLayer('100-mountains')
+            changeLayer('100-mountains')
+            setFeatureData(null)
           }}
         />
         <h3>Mountains</h3>
@@ -32,13 +35,17 @@ function LayerSelect(props: Props) {
       <div className="layer-icon">
         <img
           src={
-            castleHovered
+            castleHovered || currentLayer === '100-castles'
               ? '/image/castle-colour.svg'
               : '/image/castle-mono.svg'
           }
           alt="Bland Castle Logo"
-          onMouseOver={() => setCastleHovered(true)}
-          onMouseOut={() => setCastleHovered(false)}
+          onMouseOver={() => setCastleHovered((prev) => !prev)}
+          onMouseOut={() => setCastleHovered((prev) => !prev)}
+          onClick={() => {
+            changeLayer('100-castles')
+            setFeatureData(null)
+          }}
         />
         <h3>Castles</h3>
       </div>
@@ -48,8 +55,8 @@ function LayerSelect(props: Props) {
             onsenHovered ? '/image/onsen-colour.svg' : '/image/onsen-mono.svg'
           }
           alt="Bland Onsen Logo"
-          onMouseOver={() => setOnsenHovered(true)}
-          onMouseOut={() => setOnsenHovered(false)}
+          onMouseOver={() => setOnsenHovered((prev) => !prev)}
+          onMouseOut={() => setOnsenHovered((prev) => !prev)}
         />
         <h3>Onsen</h3>
       </div>
@@ -61,8 +68,8 @@ function LayerSelect(props: Props) {
               : '/image/shrine-mono.svg'
           }
           alt="Bland Shrine Logo"
-          onMouseOver={() => setShrineHovered(true)}
-          onMouseOut={() => setShrineHovered(false)}
+          onMouseOver={() => setShrineHovered((prev) => !prev)}
+          onMouseOut={() => setShrineHovered((prev) => !prev)}
         />
         <h3>Shrines</h3>
       </div>
@@ -74,8 +81,8 @@ function LayerSelect(props: Props) {
               : '/image/blossom-mono.svg'
           }
           alt="Bland Blossom Logo"
-          onMouseOver={() => setBlossomHovered(true)}
-          onMouseOut={() => setBlossomHovered(false)}
+          onMouseOver={() => setBlossomHovered((prev) => !prev)}
+          onMouseOut={() => setBlossomHovered((prev) => !prev)}
         />
         <h3>Blossoms</h3>
       </div>

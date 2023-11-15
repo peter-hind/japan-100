@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         domain="dev-r1zsuix7xzbvrtu2.us.auth0.com"
         clientId="wzV7qJy2w8puLhWwMsKQV783nDCWABou"
         authorizationParams={{
-          redirect_uri: window.location.origin,
+          redirect_uri: 'http://localhost:5173',
         }}
       >
         <RouterProvider router={router} />

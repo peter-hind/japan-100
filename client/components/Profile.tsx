@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { handleUser } from '../apiClient'
+import { handleUser } from '../api/apiClient'
 import User from '../../models/user'
 
 const Profile = () => {
