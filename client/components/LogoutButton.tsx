@@ -8,7 +8,7 @@ const LogoutButton = () => {
     <button
       className="login-button"
       onClick={() =>
-        logout({ logoutParams: { returnTo: 'http://localhost:5173' } })
+        logout({ logoutParams: { returnTo: window.location.origin } })
       }
     >
       Log Out
