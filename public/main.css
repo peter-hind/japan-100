@@ -51,19 +51,17 @@ h3 {
 }
 
 .feature-container {
-  width: 60%;
-  margin: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
+  width: 20vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   font-family: 'Poppins', sans-serif;
 }
 
 .feature-box {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex: 1;
   min-width: 0;
@@ -164,4 +162,22 @@ h3 {
 .profile-picture {
   margin: 25px;
   size: 96px;
+}
+
+.map-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.description {
+  font-size: 12px;
 }

@@ -52,37 +52,51 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
       <div className="layer-icon">
         <img
           src={
-            onsenHovered ? '/image/onsen-colour.svg' : '/image/onsen-mono.svg'
+            onsenHovered || currentLayer === '100-onsens'
+              ? '/image/onsen-colour.svg'
+              : '/image/onsen-mono.svg'
           }
           alt="Bland Onsen Logo"
           onMouseOver={() => setOnsenHovered((prev) => !prev)}
           onMouseOut={() => setOnsenHovered((prev) => !prev)}
+          onClick={() => {
+            changeLayer('100-onsens')
+            setFeatureData(null)
+          }}
         />
         <h3>Onsen</h3>
       </div>
       <div className="layer-icon">
         <img
           src={
-            shrineHovered
+            shrineHovered || currentLayer === '100-shrines'
               ? '/image/shrine-colour.svg'
               : '/image/shrine-mono.svg'
           }
           alt="Bland Shrine Logo"
           onMouseOver={() => setShrineHovered((prev) => !prev)}
           onMouseOut={() => setShrineHovered((prev) => !prev)}
+          onClick={() => {
+            changeLayer('100-shrines')
+            setFeatureData(null)
+          }}
         />
         <h3>Shrines</h3>
       </div>
       <div className="layer-icon">
         <img
           src={
-            blossomHovered
+            blossomHovered || currentLayer === '100-blossoms'
               ? '/image/blossom-colour.svg'
               : '/image/blossom-mono.svg'
           }
           alt="Bland Blossom Logo"
           onMouseOver={() => setBlossomHovered((prev) => !prev)}
           onMouseOut={() => setBlossomHovered((prev) => !prev)}
+          onClick={() => {
+            changeLayer('100-blossoms')
+            setFeatureData(null)
+          }}
         />
         <h3>Blossoms</h3>
       </div>

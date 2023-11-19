@@ -31,55 +31,59 @@ function CastleDetails({ featureData }: Props) {
     <div>
       {featureData ? (
         <>
-          <h2>Castle Details</h2>
-          <div className="feature-container">
-            <div className="feature-box">
-              <div className="feature-icon">🏯</div>
-              <h3>Castle Name:</h3>
-              {featureData.name}
-            </div>
-            <div className="feature-box">
-              <div className="feature-icon">🗺️</div>
-              <h3>Prefecture:</h3>
-              {featureData.prefecture}
-            </div>
-            <div className="feature-box">
-              <div className="feature-icon">♻️</div>
-              <h3>Ruined?</h3>
-              {featureData.ruin_status == true
-                ? 'In Tatters'
-                : 'Still Standing!'}
-            </div>
+          <div className="details">
+            <h2>Castle Details</h2>
+            <div className="feature-container">
+              <div className="feature-box">
+                <div className="feature-icon">🏯</div>
+                <h3>Castle Name:</h3>
+                {featureData.name}
+              </div>
+              <div className="feature-box">
+                <div className="feature-icon">🗺️</div>
+                <h3>Prefecture:</h3>
+                {featureData.prefecture}
+              </div>
+              <div className="feature-box">
+                <div className="feature-icon">♻️</div>
+                <h3>Ruined?</h3>
+                {featureData.ruin_status == true
+                  ? 'In Tatters'
+                  : 'Still Standing!'}
+              </div>
 
-            <div className="feature-box">
-              <div className="feature-icon">📒</div>
-              <h3>Description:</h3>
-              {featureData.description}
-            </div>
-          </div>
-          {user ? (
-            <div>
-              <div className="checkoff-box">
-                <h3>Visited?</h3>
-
-                {castleList?.some(
-                  (castle: any) => Number(castle.castle_id) === featureData.id
-                ) ? (
-                  <div className="feature-icon climbed">✅</div>
-                ) : (
-                  <>
-                    <div className="feature-icon not-climbed">❌</div>
-                    <button
-                      className="login-button"
-                      onClick={() => visitCastleMutation.mutate(featureData.id)}
-                    >
-                      Visited?
-                    </button>
-                  </>
-                )}
+              <div className="feature-box">
+                <div className="feature-icon">📒</div>
+                <h3>Description:</h3>
+                <p className="description">{featureData.description}</p>
               </div>
             </div>
-          ) : null}
+            {user ? (
+              <div>
+                <div className="checkoff-box">
+                  <h3>Visited?</h3>
+
+                  {castleList?.some(
+                    (castle: any) => Number(castle.castle_id) === featureData.id
+                  ) ? (
+                    <div className="feature-icon climbed">✅</div>
+                  ) : (
+                    <>
+                      <div className="feature-icon not-climbed">❌</div>
+                      <button
+                        className="login-button"
+                        onClick={() =>
+                          visitCastleMutation.mutate(featureData.id)
+                        }
+                      >
+                        Visited?
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ) : null}
+          </div>
         </>
       ) : (
         <h2>Select a Castle</h2>

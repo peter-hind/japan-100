@@ -3,6 +3,9 @@ import express from 'express'
 import cors, { CorsOptions } from 'cors'
 import mountains from './routes/mountains'
 import castles from './routes/castles'
+import onsens from './routes/onsens'
+import shrines from './routes/shrines'
+import blossoms from './routes/blossoms'
 import users from './routes/users'
 import dotenv from 'dotenv'
 import { User } from '@auth0/auth0-react'
@@ -16,6 +19,9 @@ server.use(cors('*' as CorsOptions))
 
 server.use('/api/v1/castles100', castles)
 server.use('/api/v1/mountains100', mountains)
+server.use('/api/v1/onsens100', onsens)
+server.use('/api/v1/shrines100', shrines)
+server.use('/api/v1/blossoms100', blossoms)
 server.use('/api/v1/user', users)
 
 server.get('/api/v1/greeting', (req, res) => {

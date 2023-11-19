@@ -1,25 +1,25 @@
-import { climbMountain, getClimberMountains } from '../api/mountainApi.ts'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import Mountain from '../../models/mountain.ts'
+import Onsen from '../../models/onsen.ts'
+import { getVisitorOnsens, visitOnsen } from '../api/onsenApi.ts'
 
 interface Props {
-  featureData: Mountain
+  featureData: Onsen
 }
 
-function MountainDetails({ featureData }: Props) {
+function OnsenDetails({ featureData }: Props) {
   const { user } = useAuth0()
   const queryClient = useQueryClient()
 
-  const { data: mountainList, isLoading } = useQuery({
-    queryKey: ['currentmountains'],
-    queryFn: () => getClimberMountains(user?.sub as string),
+  const { data: onsenList, isLoading } = useQuery({
+    queryKey: ['currentonsens'],
+    queryFn: () => getVisitorOnsens(user?.sub as string),
   })
 
-  const climbMountainMutation = useMutation({
-    mutationFn: (peakId: number) => climbMountain(user?.sub as string, peakId),
+  const visitOnsenMutation = useMutation({
+    mutationFn: (springId: number) => visitOnsen(user?.sub as string, springId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['currentmountains'] })
+      queryClient.invalidateQueries({ queryKey: ['currentonsens'] })
     },
   })
 
@@ -31,11 +31,11 @@ function MountainDetails({ featureData }: Props) {
       {featureData ? (
         <>
           <div className="details">
-            <h2>Mountain Details</h2>
+            <h2>Onsen Details</h2>
             <div className="feature-container">
               <div className="feature-box">
-                <div className="feature-icon">⛰️</div>
-                <h3>Mountain Name:</h3>
+                <div className="feature-icon">♨️</div>
+                <h3>Onsen Name:</h3>
                 {featureData.name}
               </div>
               <div className="feature-box">
@@ -44,9 +44,15 @@ function MountainDetails({ featureData }: Props) {
                 {featureData.prefecture}
               </div>
               <div className="feature-box">
-                <div className="feature-icon">🔝</div>
-                <h3>Elevation:</h3>
-                {featureData.elevation_m}m
+                <div className="feature-icon">💪🏻</div>
+                <h3>Benefits</h3>
+                <ul>
+                  {featureData.benefits
+                    .split(',')
+                    .map((item: string, index: number) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                </ul>
               </div>
 
               <div className="feature-box">
@@ -58,11 +64,10 @@ function MountainDetails({ featureData }: Props) {
             {user ? (
               <div>
                 <div className="checkoff-box">
-                  <h3>Climbed?</h3>
+                  <h3>Visited?</h3>
 
-                  {mountainList?.some(
-                    (mountain: any) =>
-                      Number(mountain.peak_id) === featureData.id
+                  {onsenList?.some(
+                    (onsen: any) => Number(onsen.spring_id) === featureData.id
                   ) ? (
                     <div className="feature-icon climbed">✅</div>
                   ) : (
@@ -71,10 +76,10 @@ function MountainDetails({ featureData }: Props) {
                       <button
                         className="login-button"
                         onClick={() =>
-                          climbMountainMutation.mutate(featureData.id)
+                          visitOnsenMutation.mutate(featureData.id)
                         }
                       >
-                        Climbed?
+                        Visited?
                       </button>
                     </>
                   )}
@@ -84,10 +89,10 @@ function MountainDetails({ featureData }: Props) {
           </div>
         </>
       ) : (
-        <h2>Select a Mountain</h2>
+        <h2>Select an Onsen</h2>
       )}
     </div>
   )
 }
 
-export default MountainDetails
+export default OnsenDetails
