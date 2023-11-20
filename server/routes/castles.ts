@@ -1,21 +1,21 @@
 import express from 'express'
-import { fetchMountain, climbMountain, fetchClimberMountains } from '../db/db'
+import { fetchCastle, visitCastle, fetchVisitorCastles } from '../db/db'
 
 const router = express.Router()
 
 router.get('/:title', async (req, res) => {
   try {
     const title = req.params.title
-    const mountain = await fetchMountain(title)
+    const castle = await fetchCastle(title)
 
-    if (!mountain) {
-      res.status(404).json({ message: 'Mountain not found' })
+    if (!castle) {
+      res.status(404).json({ message: 'Castle not found' })
       return
     }
-    res.status(200).json(mountain)
+    res.status(200).json(castle)
   } catch (err) {
     res.status(500).json({
-      message: 'An error occurred while getting posts',
+      message: 'An error occurred while getting Castles',
       error: err instanceof Error ? err.message : 'Unknown error',
     })
   }
@@ -25,12 +25,12 @@ router.get('/user/:sub', async (req, res) => {
   try {
     const sub = req.params.sub
     console.log(sub)
-    const mountains = await fetchClimberMountains(sub)
-    if (!mountains) {
-      res.status(404).json({ message: 'Mountains not found' })
+    const castles = await fetchVisitorCastles(sub)
+    if (!castles) {
+      res.status(404).json({ message: 'Castles not found' })
       return
     }
-    res.status(200).json(mountains)
+    res.status(200).json(castles)
   } catch (err) {
     res.status(500).json({
       message: 'An error occurred while getting list',
@@ -42,13 +42,13 @@ router.get('/user/:sub', async (req, res) => {
 router.post('/', async (req, res) => {
   console.log(req.body)
   const currentUser = req.body.sub
-  const mountain = req.body.mountain
-  const newClimb = await climbMountain(currentUser, mountain)
-  if (!newClimb) {
+  const castle = req.body.castle
+  const newVisit = await visitCastle(currentUser, castle)
+  if (!newVisit) {
     res.status(404).json({ message: 'Something went wrong' })
     return
   }
-  res.status(200).json(newClimb)
+  res.status(200).json(newVisit)
 })
 
 export default router

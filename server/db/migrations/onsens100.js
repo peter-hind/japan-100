@@ -1,14 +1,14 @@
 export async function up(knex) {
-  return knex.schema.createTable('mountains100', (table) => {
+  return knex.schema.createTable('onsens100', (table) => {
     table.increments('id')
     table.string('name')
     table.string('prefecture')
-    table.integer('elevation_m')
+    table.string('benefits')
     table.string('description')
     table.string('geojson')
   })
 }
 
 export async function down(knex) {
-  return knex.schema.dropTable('mountains100')
+  return knex.schema.dropTable('onsens100')
 }

@@ -2,6 +2,7 @@ body {
   width: 100%;
   max-width: 2000px;
   margin: auto;
+  font-family: 'Poppins', sans-serif;
 }
 
 .header {
@@ -29,7 +30,7 @@ h3 {
 }
 
 .map-container {
-  height: 40vh;
+  height: 60vh;
   min-height: 500px;
   width: 60%;
   margin: 50px auto;
@@ -50,29 +51,50 @@ h3 {
 }
 
 .feature-container {
-  width: 60%;
-  height: 20vh;
-  margin: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
+  width: 20vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   font-family: 'Poppins', sans-serif;
 }
 
 .feature-box {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex: 1;
+  min-width: 0;
   border-radius: 15px;
   padding: 15px;
   text-align: center;
 }
 
+.checkoff-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  margin: auto;
+  margin-bottom: 60px;
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  background-color: bisque;
+  max-width: 40vw;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
 .feature-icon {
   font-size: 50px;
+}
+
+.climbed {
+  min-width: 152.52px;
 }
 
 .layer-select {
@@ -86,6 +108,9 @@ h3 {
 
 .layer-icon {
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .layer-icon img {
@@ -96,4 +121,63 @@ h3 {
 
 .layer-icon img:hover {
   transform: scale(1.1);
+}
+
+.profile-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 100px;
+  background-color: bisque;
+  box-shadow: 0px 15px 10px -15px #111;
+}
+
+.logo {
+  margin-top: 100px;
+}
+
+.login-button {
+  padding: 10px 60px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-button:hover {
+  background-color: rgba(177, 57, 36, 0.945);
+}
+
+.profile-picture {
+  margin: 25px;
+  size: 96px;
+}
+
+.map-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.description {
+  font-size: 12px;
 }

@@ -1,25 +1,26 @@
-import { climbMountain, getClimberMountains } from '../api/mountainApi.ts'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import Mountain from '../../models/mountain.ts'
+import Blossom from '../../models/blossom.ts'
+import { getVisitorBlossoms, visitBlossom } from '../api/blossomApi.ts'
 
 interface Props {
-  featureData: Mountain
+  featureData: Blossom
 }
 
-function MountainDetails({ featureData }: Props) {
+function BlossomDetails({ featureData }: Props) {
   const { user } = useAuth0()
   const queryClient = useQueryClient()
 
-  const { data: mountainList, isLoading } = useQuery({
-    queryKey: ['currentmountains'],
-    queryFn: () => getClimberMountains(user?.sub as string),
+  const { data: blossomList, isLoading } = useQuery({
+    queryKey: ['currentblossoms'],
+    queryFn: () => getVisitorBlossoms(user?.sub as string),
   })
 
-  const climbMountainMutation = useMutation({
-    mutationFn: (peakId: number) => climbMountain(user?.sub as string, peakId),
+  const visitBlossomMutation = useMutation({
+    mutationFn: (blossomId: number) =>
+      visitBlossom(user?.sub as string, blossomId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['currentmountains'] })
+      queryClient.invalidateQueries({ queryKey: ['currentblossoms'] })
     },
   })
 
@@ -31,11 +32,11 @@ function MountainDetails({ featureData }: Props) {
       {featureData ? (
         <>
           <div className="details">
-            <h2>Mountain Details</h2>
+            <h2>Blossom Details</h2>
             <div className="feature-container">
               <div className="feature-box">
-                <div className="feature-icon">⛰️</div>
-                <h3>Mountain Name:</h3>
+                <div className="feature-icon">🌸</div>
+                <h3>Blossom Area:</h3>
                 {featureData.name}
               </div>
               <div className="feature-box">
@@ -44,9 +45,9 @@ function MountainDetails({ featureData }: Props) {
                 {featureData.prefecture}
               </div>
               <div className="feature-box">
-                <div className="feature-icon">🔝</div>
-                <h3>Elevation:</h3>
-                {featureData.elevation_m}m
+                <div className="feature-icon">🌳</div>
+                <h3>Blossom Count</h3>
+                {featureData.tree_count} Trees
               </div>
 
               <div className="feature-box">
@@ -58,11 +59,11 @@ function MountainDetails({ featureData }: Props) {
             {user ? (
               <div>
                 <div className="checkoff-box">
-                  <h3>Climbed?</h3>
+                  <h3>Visited?</h3>
 
-                  {mountainList?.some(
-                    (mountain: any) =>
-                      Number(mountain.peak_id) === featureData.id
+                  {blossomList?.some(
+                    (blossom: any) =>
+                      Number(blossom.blossom_id) === featureData.id
                   ) ? (
                     <div className="feature-icon climbed">✅</div>
                   ) : (
@@ -71,10 +72,10 @@ function MountainDetails({ featureData }: Props) {
                       <button
                         className="login-button"
                         onClick={() =>
-                          climbMountainMutation.mutate(featureData.id)
+                          visitBlossomMutation.mutate(featureData.id)
                         }
                       >
-                        Climbed?
+                        Visited?
                       </button>
                     </>
                   )}
@@ -84,10 +85,10 @@ function MountainDetails({ featureData }: Props) {
           </div>
         </>
       ) : (
-        <h2>Select a Mountain</h2>
+        <h2>Select a Blossom</h2>
       )}
     </div>
   )
 }
 
-export default MountainDetails
+export default BlossomDetails
