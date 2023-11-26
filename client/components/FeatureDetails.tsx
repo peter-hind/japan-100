@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Feature from '../../models/Ifeature.ts'
-import { getVisitorFeatures, visitFeature } from '../api/blossomApi.ts'
+import { getVisitorFeatures, visitFeature } from '../api/featureApi.ts'
 
 interface Props {
   featureData: Feature | null
@@ -18,6 +18,8 @@ function FeatureDetails({ featureData, layer }: Props) {
     queryFn: () => getVisitorFeatures(layer, user?.sub as string),
   })
 
+  console.log(featureList)
+
   const visitFeatureMutation = useMutation({
     mutationFn: (featureId: number) =>
       visitFeature(layer, user?.sub as string, featureId),
@@ -30,81 +32,37 @@ function FeatureDetails({ featureData, layer }: Props) {
   const featureType = type.charAt(0).toUpperCase() + type.slice(1)
 
   let featureIcon
-  let optionText
 
   switch (type) {
     case 'mountain':
       featureIcon = '⛰️'
-      optionText = (
-        <div className="feature-box">
-          <div className="feature-icon">🔝</div>
-          <h3>Elevation:</h3>
-          {featureData.elevation_m}m
-        </div>
-      )
       break
     case 'castle':
       featureIcon = '🏯'
-      optionText = (
-        <div className="feature-box">
-          <div className="feature-icon">♻️</div>
-          <h3>Ruined?</h3>
-          {featureData.ruin_status == true ? 'In Tatters' : 'Still Standing!'}
-        </div>
-      )
       break
     case 'blossom':
       featureIcon = '🌸'
-      optionText = (
-        <div className="feature-box">
-          <div className="feature-icon">🌳</div>
-          <h3>Tree Count</h3>
-          {featureData.tree_count} Trees
-        </div>
-      )
       break
     case 'onsen':
       featureIcon = '♨️'
-      optionText = (
-        <div className="feature-box">
-          <div className="feature-icon">💪🏻</div>
-          <h3>Benefits</h3>
-          <ul>
-            {featureData.benefits
-              ? featureData.benefits
-                  .split(',')
-                  .map((item: string, index: number) => (
-                    <li key={index}>{item}</li>
-                  ))
-              : null}
-          </ul>
-        </div>
-      )
       break
     case 'shrine':
       featureIcon = '⛩️'
-      optionText = (
-        <div className="feature-box">
-          <div className="feature-icon">🙏🏻</div>
-          <h3>Enshrined Kami</h3>
-          <ul>
-            {featureData.kami
-              ? featureData.kami
-                  .split(',')
-                  .map((item: string, index: number) => (
-                    <li key={index}>{item}</li>
-                  ))
-              : null}
-          </ul>
-        </div>
-      )
       break
     default:
       null
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>
+  // if (isLoading) {
+  //   return <div>Loading...</div>
+  // }
+
+  if (layer === '') {
+    return (
+      <div className="details">
+        <h2>Choose a list</h2>
+      </div>
+    )
   }
   return (
     <div>
@@ -123,7 +81,59 @@ function FeatureDetails({ featureData, layer }: Props) {
                 <h3>Prefecture:</h3>
                 {featureData.prefecture}
               </div>
-              {optionText}
+              {type === 'mountain' ? (
+                <div className="feature-box">
+                  <div className="feature-icon">🔝</div>
+                  <h3>Elevation:</h3>
+                  {featureData.elevation_m}m
+                </div>
+              ) : null}
+              {type === 'castle' ? (
+                <div className="feature-box">
+                  <div className="feature-icon">♻️</div>
+                  <h3>Ruined?</h3>
+                  {featureData.ruin_status == true
+                    ? 'In Tatters'
+                    : 'Still Standing!'}
+                </div>
+              ) : null}
+              {type === 'blossom' ? (
+                <div className="feature-box">
+                  <div className="feature-icon">🌳</div>
+                  <h3>Tree Count</h3>
+                  {featureData.tree_count} Trees
+                </div>
+              ) : null}
+              {type === 'onsen' ? (
+                <div className="feature-box">
+                  <div className="feature-icon">💪🏻</div>
+                  <h3>Benefits</h3>
+                  <ul>
+                    {featureData.benefits
+                      ? featureData.benefits
+                          .split(',')
+                          .map((item: string, index: number) => (
+                            <li key={index}>{item}</li>
+                          ))
+                      : null}
+                  </ul>
+                </div>
+              ) : null}
+              {type === 'shrine' ? (
+                <div className="feature-box">
+                  <div className="feature-icon">🙏🏻</div>
+                  <h3>Enshrined Kami</h3>
+                  <ul>
+                    {featureData.kami
+                      ? featureData.kami
+                          .split(',')
+                          .map((item: string, index: number) => (
+                            <li key={index}>{item}</li>
+                          ))
+                      : null}
+                  </ul>
+                </div>
+              ) : null}
 
               <div className="feature-box">
                 <div className="feature-icon">📒</div>
@@ -160,7 +170,7 @@ function FeatureDetails({ featureData, layer }: Props) {
           </div>
         </>
       ) : (
-        <h2>Choose a list</h2>
+        <h2>Choose a {featureType}</h2>
       )}
     </div>
   )

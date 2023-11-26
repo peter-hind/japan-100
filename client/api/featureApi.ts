@@ -1,5 +1,5 @@
 import request from 'superagent'
-import { Feature } from '../../models/feature'
+import Feature from '../../models/Ifeature.ts'
 
 const rootUrl = '/api/v1'
 

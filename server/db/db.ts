@@ -135,7 +135,7 @@ export async function visitFeature(
 
 export async function fetchVisitorFeatures(layer: string, sub: string) {
   return db
-    .select(`users_${layer}.peak_id`)
+    .select(`users_${layer}.feature_id`)
     .from(`users_${layer}`)
     .where('sub', sub)
 }

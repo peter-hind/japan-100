@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Map from './Map.tsx'
 import LayerSelect from './LayerSelect.tsx'
 import MapFeature from '../../models/mapfeature.ts'
-import { getFeature } from '../api/blossomApi.ts'
+import { getFeature } from '../api/featureApi.ts'
 import FeatureDetails from './FeatureDetails.tsx'
 import Feature from '../../models/Ifeature.ts'
 
