@@ -1,7 +1,7 @@
 export async function up(knex) {
   return knex.schema.createTable('users_shrines', (table) => {
     table.string('sub')
-    table.string('shrine_id')
+    table.string('feature_id')
   })
 }
 

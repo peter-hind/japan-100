@@ -1,7 +1,7 @@
 export async function up(knex) {
   return knex.schema.createTable('users_mountains', (table) => {
     table.string('sub')
-    table.string('peak_id')
+    table.string('feature_id')
   })
 }
 

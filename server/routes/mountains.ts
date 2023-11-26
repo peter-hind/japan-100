@@ -1,12 +1,13 @@
 import express from 'express'
-import { fetchMountain, climbMountain, fetchClimberMountains } from '../db/db'
+import { fetchFeature, visitFeature, fetchVisitorFeatures } from '../db/db'
 
 const router = express.Router()
+const layer = 'mountains100'
 
 router.get('/:title', async (req, res) => {
   try {
     const title = req.params.title
-    const mountain = await fetchMountain(title)
+    const mountain = await fetchFeature(title, layer)
 
     if (!mountain) {
       res.status(404).json({ message: 'Mountain not found' })
@@ -25,7 +26,7 @@ router.get('/user/:sub', async (req, res) => {
   try {
     const sub = req.params.sub
     console.log(sub)
-    const mountains = await fetchClimberMountains(sub)
+    const mountains = await fetchVisitorFeatures(layer, sub)
     if (!mountains) {
       res.status(404).json({ message: 'Mountains not found' })
       return
@@ -42,8 +43,8 @@ router.get('/user/:sub', async (req, res) => {
 router.post('/', async (req, res) => {
   console.log(req.body)
   const currentUser = req.body.sub
-  const mountain = req.body.mountain
-  const newClimb = await climbMountain(currentUser, mountain)
+  const mountain = req.body.feature
+  const newClimb = await visitFeature(layer, currentUser, mountain)
   if (!newClimb) {
     res.status(404).json({ message: 'Something went wrong' })
     return

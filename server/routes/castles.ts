@@ -1,12 +1,13 @@
 import express from 'express'
-import { fetchCastle, visitCastle, fetchVisitorCastles } from '../db/db'
+import { fetchFeature, visitFeature, fetchVisitorFeatures } from '../db/db'
 
 const router = express.Router()
+const layer = 'castles100'
 
 router.get('/:title', async (req, res) => {
   try {
     const title = req.params.title
-    const castle = await fetchCastle(title)
+    const castle = await fetchFeature(title, layer)
 
     if (!castle) {
       res.status(404).json({ message: 'Castle not found' })
@@ -25,7 +26,7 @@ router.get('/user/:sub', async (req, res) => {
   try {
     const sub = req.params.sub
     console.log(sub)
-    const castles = await fetchVisitorCastles(sub)
+    const castles = await fetchVisitorFeatures(layer, sub)
     if (!castles) {
       res.status(404).json({ message: 'Castles not found' })
       return
@@ -42,8 +43,8 @@ router.get('/user/:sub', async (req, res) => {
 router.post('/', async (req, res) => {
   console.log(req.body)
   const currentUser = req.body.sub
-  const castle = req.body.castle
-  const newVisit = await visitCastle(currentUser, castle)
+  const castle = req.body.feature
+  const newVisit = await visitFeature(layer, currentUser, castle)
   if (!newVisit) {
     res.status(404).json({ message: 'Something went wrong' })
     return

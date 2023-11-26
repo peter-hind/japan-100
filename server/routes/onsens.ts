@@ -1,12 +1,13 @@
 import express from 'express'
-import { fetchOnsen, visitOnsen, fetchVisitorOnsens } from '../db/db'
+import { fetchFeature, visitFeature, fetchVisitorFeatures } from '../db/db'
 
 const router = express.Router()
+const layer = 'onsens100'
 
 router.get('/:title', async (req, res) => {
   try {
     const title = req.params.title
-    const onsen = await fetchOnsen(title)
+    const onsen = await fetchFeature(title, layer)
 
     if (!onsen) {
       res.status(404).json({ message: 'Onsen not found' })
@@ -25,7 +26,7 @@ router.get('/user/:sub', async (req, res) => {
   try {
     const sub = req.params.sub
     console.log(sub)
-    const onsens = await fetchVisitorOnsens(sub)
+    const onsens = await fetchVisitorFeatures(layer, sub)
     if (!onsens) {
       res.status(404).json({ message: 'Onsens not found' })
       return
@@ -42,8 +43,8 @@ router.get('/user/:sub', async (req, res) => {
 router.post('/', async (req, res) => {
   console.log(req.body)
   const currentUser = req.body.sub
-  const onsen = req.body.onsen
-  const newVisit = await visitOnsen(currentUser, onsen)
+  const onsen = req.body.feature
+  const newVisit = await visitFeature(layer, currentUser, onsen)
   if (!newVisit) {
     res.status(404).json({ message: 'Something went wrong' })
     return
