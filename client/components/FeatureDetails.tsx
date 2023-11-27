@@ -9,7 +9,7 @@ interface Props {
 }
 
 function FeatureDetails({ featureData, layer }: Props) {
-  const { user } = useAuth0()
+  const { user, getAccessTokenSilently } = useAuth0()
   const queryClient = useQueryClient()
   console.log(featureData)
 
@@ -21,12 +21,24 @@ function FeatureDetails({ featureData, layer }: Props) {
   console.log(featureList)
 
   const visitFeatureMutation = useMutation({
-    mutationFn: (featureId: number) =>
-      visitFeature(layer, user?.sub as string, featureId),
+    mutationFn:
+      // const token = await getAccessTokenSilently()
+      // console.log('mutation', token)
+      visitFeature,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`current${layer}`] })
     },
   })
+
+  async function handleVisitClick() {
+    const token = await getAccessTokenSilently()
+    console.log(token)
+    visitFeatureMutation.mutate({
+      layer: layer,
+      feature: featureData?.id as number,
+      token: token,
+    })
+  }
 
   const type = layer.slice(0, -4)
   const featureType = type.charAt(0).toUpperCase() + type.slice(1)
@@ -156,9 +168,7 @@ function FeatureDetails({ featureData, layer }: Props) {
                       <div className="feature-icon not-visited">❌</div>
                       <button
                         className="login-button"
-                        onClick={() =>
-                          visitFeatureMutation.mutate(featureData.id)
-                        }
+                        onClick={handleVisitClick}
                       >
                         Visited?
                       </button>

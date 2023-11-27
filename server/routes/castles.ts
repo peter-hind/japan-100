@@ -1,5 +1,6 @@
 import express from 'express'
 import { fetchFeature, visitFeature, fetchVisitorFeatures } from '../db/db'
+import checkJwt, { JwtRequest } from '../auth0'
 
 const router = express.Router()
 const layer = 'castles100'
@@ -40,10 +41,14 @@ router.get('/user/:sub', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', checkJwt, async (req: JwtRequest, res) => {
   console.log(req.body)
-  const currentUser = req.body.sub
+  const currentUser = req.auth?.sub
   const castle = req.body.feature
+  if (!currentUser) {
+    res.status(404).json({ message: 'Not logged in!' })
+    return
+  }
   const newVisit = await visitFeature(layer, currentUser, castle)
   if (!newVisit) {
     res.status(404).json({ message: 'Something went wrong' })

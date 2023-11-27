@@ -16,17 +16,23 @@ export async function getVisitorFeatures(
   sub: string
 ): Promise<any> {
   const res = await request.get(`${rootUrl}/${layer}/user/${sub}`)
-  console.log('apiclient userblossoms', res.body)
   return res.body
 }
-export async function visitFeature(
-  layer: string,
-  sub: string,
+
+interface visitFeature {
+  layer: string
   feature: number
-): Promise<any> {
+  token: string
+}
+export async function visitFeature({
+  layer,
+  feature,
+  token,
+}: visitFeature): Promise<any> {
+  console.log(token)
   const res = await request
     .post(`/api/v1/${layer}`)
-    .set('Content-Type', 'application/json')
-    .send({ sub, feature })
+    .set('Authorization', `Bearer ${token}`)
+    .send({ feature })
   return res.body
 }
