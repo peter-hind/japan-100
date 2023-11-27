@@ -1,5 +1,10 @@
 import express from 'express'
-import { fetchFeature, visitFeature, fetchVisitorFeatures } from '../db/db'
+import {
+  fetchFeature,
+  visitFeature,
+  fetchVisitorFeatures,
+  deleteFeature,
+} from '../db/db'
 import checkJwt, { JwtRequest } from '../auth0'
 
 const router = express.Router()
@@ -55,6 +60,22 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
     return
   }
   res.status(200).json(newVisit)
+})
+
+router.delete('/', checkJwt, async (req: JwtRequest, res) => {
+  console.log(req.body)
+  const currentUser = req.auth?.sub
+  const onsen = req.body.feature
+  if (!currentUser) {
+    res.status(404).json({ message: 'Not logged in!' })
+    return
+  }
+  const removedOnsen = await deleteFeature(layer, currentUser, onsen)
+  if (!removedOnsen) {
+    res.status(404).json({ message: 'Something went wrong' })
+    return
+  }
+  res.status(200).json(removedOnsen)
 })
 
 export default router
