@@ -70,6 +70,13 @@ function SignUp() {
     setSubmit(true)
   }
 
+  function handleButtonDown(event: React.KeyboardEvent) {
+    // Check if the key pressed is the Enter key (key code 13) or the Space key (key code 32)
+    if (event.key === 'Enter') {
+      handleSubmit
+    }
+  }
+
   const avatars = [
     { id: 1, url: '/image/avatars/avatar1.png', alt: 'Avatar 1' },
     { id: 2, url: '/image/avatars/avatar2.png', alt: 'Avatar 2' },
@@ -185,7 +192,12 @@ function SignUp() {
       allProfiles.some((user) => user.username === currentForm?.username) ? (
         <div className="signup-success">
           <h2 className="text-center">Thank you for signing up!</h2>
-          <button className="login-button" onClick={() => loginWithRedirect()}>
+          <button
+            className="login-button"
+            onClick={() => loginWithRedirect()}
+            onKeyDown={(e) => handleButtonDown(e)}
+            tabIndex={0}
+          >
             Login
           </button>
         </div>

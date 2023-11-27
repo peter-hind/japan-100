@@ -14,6 +14,13 @@ function ImageGrid({ images, onSelect }: ImageGrid) {
     onSelect(image)
   }
 
+  function handleImageKeyDown(event: React.KeyboardEvent, image: Image) {
+    // Check if the key pressed is the Enter key (key code 13) or the Space key (key code 32)
+    if (event.key === 'Enter') {
+      handleImageClick(image)
+    }
+  }
+
   return (
     <div className="image-grid">
       {images.map((image) => (
@@ -25,6 +32,8 @@ function ImageGrid({ images, onSelect }: ImageGrid) {
             selectedImage && selectedImage.id === image.id ? 'selected' : ''
           }
           onClick={() => handleImageClick(image)}
+          onKeyDown={(e) => handleImageKeyDown(e, image)}
+          tabIndex={0} // Enables the element to receive keyboard focus
         />
       ))}
     </div>
