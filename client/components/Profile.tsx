@@ -1,22 +1,41 @@
 import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { handleUser } from '../api/apiClient'
-import User from '../../models/user'
+import { useQuery } from '@tanstack/react-query'
+import { getAllUsers } from '../api/apiClient'
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0()
+
+  const {
+    data: allProfiles,
+    isError,
+    isLoading: isPending,
+  } = useQuery({ queryKey: ['users'], queryFn: () => getAllUsers() })
+  if (isError) {
+    return <div>There was an error getting all profiles...</div>
+  }
+
+  if (!allProfiles || isPending) {
+    return <div>Loading all profiles...</div>
+  }
+
+  const currentUser = allProfiles.find(
+    (profile) => profile.auth0Id === user?.sub
+  )
 
   if (isLoading) {
     return <div>Loading ...</div>
   }
 
-  isAuthenticated ? handleUser(user as User) : null
-
   return (
     isAuthenticated && (
       <div className="profile-bar">
-        <img className="profile-picture" src={user?.picture} alt={user?.name} />
-        <h2>{user?.name}</h2>
+        <img
+          className="profile-picture"
+          src={currentUser?.picture}
+          alt={currentUser?.username}
+        />
+        <h2>{currentUser?.username}</h2>
       </div>
     )
   )

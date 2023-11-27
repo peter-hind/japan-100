@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { cursorTo } from 'readline'
 
 interface Props {
   currentLayer: string
@@ -18,7 +17,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
       <div className="layer-icon">
         <img
           src={
-            mountainHovered || currentLayer === '100-mountains'
+            mountainHovered || currentLayer === 'mountains100'
               ? '/image/mountain-colour.svg'
               : '/image/mountain-mono.svg'
           }
@@ -26,7 +25,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
           onMouseOver={() => setMountainHovered((prev) => !prev)}
           onMouseOut={() => setMountainHovered((prev) => !prev)}
           onClick={() => {
-            changeLayer('100-mountains')
+            changeLayer('mountains100')
             setFeatureData(null)
           }}
         />
@@ -35,7 +34,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
       <div className="layer-icon">
         <img
           src={
-            castleHovered || currentLayer === '100-castles'
+            castleHovered || currentLayer === 'castles100'
               ? '/image/castle-colour.svg'
               : '/image/castle-mono.svg'
           }
@@ -43,7 +42,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
           onMouseOver={() => setCastleHovered((prev) => !prev)}
           onMouseOut={() => setCastleHovered((prev) => !prev)}
           onClick={() => {
-            changeLayer('100-castles')
+            changeLayer('castles100')
             setFeatureData(null)
           }}
         />
@@ -52,7 +51,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
       <div className="layer-icon">
         <img
           src={
-            onsenHovered || currentLayer === '100-onsens'
+            onsenHovered || currentLayer === 'onsens100'
               ? '/image/onsen-colour.svg'
               : '/image/onsen-mono.svg'
           }
@@ -60,7 +59,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
           onMouseOver={() => setOnsenHovered((prev) => !prev)}
           onMouseOut={() => setOnsenHovered((prev) => !prev)}
           onClick={() => {
-            changeLayer('100-onsens')
+            changeLayer('onsens100')
             setFeatureData(null)
           }}
         />
@@ -69,7 +68,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
       <div className="layer-icon">
         <img
           src={
-            shrineHovered || currentLayer === '100-shrines'
+            shrineHovered || currentLayer === 'shrines100'
               ? '/image/shrine-colour.svg'
               : '/image/shrine-mono.svg'
           }
@@ -77,7 +76,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
           onMouseOver={() => setShrineHovered((prev) => !prev)}
           onMouseOut={() => setShrineHovered((prev) => !prev)}
           onClick={() => {
-            changeLayer('100-shrines')
+            changeLayer('shrines100')
             setFeatureData(null)
           }}
         />
@@ -86,7 +85,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
       <div className="layer-icon">
         <img
           src={
-            blossomHovered || currentLayer === '100-blossoms'
+            blossomHovered || currentLayer === 'blossoms100'
               ? '/image/blossom-colour.svg'
               : '/image/blossom-mono.svg'
           }
@@ -94,7 +93,7 @@ function LayerSelect({ currentLayer, changeLayer, setFeatureData }: Props) {
           onMouseOver={() => setBlossomHovered((prev) => !prev)}
           onMouseOut={() => setBlossomHovered((prev) => !prev)}
           onClick={() => {
-            changeLayer('100-blossoms')
+            changeLayer('blossoms100')
             setFeatureData(null)
           }}
         />

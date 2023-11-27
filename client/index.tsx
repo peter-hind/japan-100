@@ -11,10 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
   createRoot(document.getElementById('app') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <Auth0Provider
-        domain="dev-r1zsuix7xzbvrtu2.us.auth0.com"
-        clientId="wzV7qJy2w8puLhWwMsKQV783nDCWABou"
+        domain="manaia-2023-pete.au.auth0.com"
+        clientId="AuMU2cLU4t5JULgPP5JyV8SZlStfjeDl"
         authorizationParams={{
           redirect_uri: window.location.origin,
+          audience: 'https://japan-completionist/api',
         }}
       >
         <RouterProvider router={router} />
