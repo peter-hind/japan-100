@@ -58,6 +58,18 @@ export async function visitFeature(
     .returning('*')
 }
 
+export async function deleteFeature(
+  layer: string,
+  currentUser: string,
+  feature: number
+) {
+  return db(`users_${layer}`)
+    .where('sub', currentUser)
+    .where('feature_id', feature)
+    .del()
+    .returning('*')
+}
+
 export async function fetchVisitorFeatures(layer: string, sub: string) {
   return db
     .select(`users_${layer}.feature_id`)

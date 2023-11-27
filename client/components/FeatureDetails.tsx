@@ -1,7 +1,11 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Feature from '../../models/Ifeature.ts'
-import { getVisitorFeatures, visitFeature } from '../api/featureApi.ts'
+import {
+  getVisitorFeatures,
+  visitFeature,
+  resetFeature,
+} from '../api/featureApi.ts'
 
 interface Props {
   featureData: Feature | null
@@ -21,10 +25,14 @@ function FeatureDetails({ featureData, layer }: Props) {
   console.log(featureList)
 
   const visitFeatureMutation = useMutation({
-    mutationFn:
-      // const token = await getAccessTokenSilently()
-      // console.log('mutation', token)
-      visitFeature,
+    mutationFn: visitFeature,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`current${layer}`] })
+    },
+  })
+
+  const resetFeatureMutation = useMutation({
+    mutationFn: resetFeature,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`current${layer}`] })
     },
@@ -34,6 +42,16 @@ function FeatureDetails({ featureData, layer }: Props) {
     const token = await getAccessTokenSilently()
     console.log(token)
     visitFeatureMutation.mutate({
+      layer: layer,
+      feature: featureData?.id as number,
+      token: token,
+    })
+  }
+
+  async function handleResetClick() {
+    const token = await getAccessTokenSilently()
+    console.log(token)
+    resetFeatureMutation.mutate({
       layer: layer,
       feature: featureData?.id as number,
       token: token,
@@ -162,7 +180,15 @@ function FeatureDetails({ featureData, layer }: Props) {
                     (feature: any) =>
                       Number(feature.feature_id) === featureData.id
                   ) ? (
-                    <div className="feature-icon visited">✅</div>
+                    <>
+                      <div className="feature-icon visited">✅</div>
+                      <button
+                        className="login-button"
+                        onClick={handleResetClick}
+                      >
+                        Reset?
+                      </button>
+                    </>
                   ) : (
                     <>
                       <div className="feature-icon not-visited">❌</div>

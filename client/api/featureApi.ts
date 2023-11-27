@@ -36,3 +36,16 @@ export async function visitFeature({
     .send({ feature })
   return res.body
 }
+
+export async function resetFeature({
+  layer,
+  feature,
+  token,
+}: visitFeature): Promise<any> {
+  console.log(token)
+  const res = await request
+    .delete(`/api/v1/${layer}`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({ feature })
+  return res.body
+}
