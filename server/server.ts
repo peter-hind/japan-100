@@ -8,8 +8,7 @@ import shrines from './routes/shrines'
 import blossoms from './routes/blossoms'
 import users from './routes/users'
 import dotenv from 'dotenv'
-import { User } from '@auth0/auth0-react'
-import { handleUser } from './db/db'
+
 dotenv.config()
 
 const server = express()
@@ -22,7 +21,7 @@ server.use('/api/v1/mountains100', mountains)
 server.use('/api/v1/onsens100', onsens)
 server.use('/api/v1/shrines100', shrines)
 server.use('/api/v1/blossoms100', blossoms)
-server.use('/api/v1/user', users)
+server.use('/api/v1/users', users)
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))

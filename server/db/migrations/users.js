@@ -1,18 +1,16 @@
 export async function up(knex) {
   return knex.schema.createTable('users', (table) => {
-    table.string('sub')
-    table.string('given_name')
-    table.string('family_name')
-    table.string('nickname')
-    table.string('name')
+    table.increments('id').primary()
+    table.string('auth0_id').unique()
+    table.string('username').unique()
+    table.string('first_name')
+    table.string('surname')
     table.string('picture')
-    table.string('locale')
-    table.string('updated_at')
+    table.string('location')
     table.string('email')
-    table.boolean('email_verified')
   })
 }
 
 export async function down(knex) {
-  return knex.schema.dropTable('exampleTable')
+  return knex.schema.dropTable('users')
 }

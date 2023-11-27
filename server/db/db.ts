@@ -1,27 +1,36 @@
-import User from '../../models/user'
+import { UserSnakeCase } from '../../models/users'
 import connection from './connection'
 
 const db = connection
 
-export async function handleUser(user: User) {
-  const existingUser = await db
-    .select('*')
-    .from('users')
-    .where({ sub: user.sub })
-    .first()
-  if (existingUser) {
-    return updateUser(user)
-  } else {
-    return createUser(user)
-  }
+export async function addUser(newUser: UserSnakeCase): Promise<any[]> {
+  const result = await db('users')
+    .insert(newUser)
+    .returning([
+      'id',
+      'auth0_id as auth0Id',
+      'username',
+      'first_name as firstName',
+      'surname',
+      'location',
+      'picture',
+      'email',
+    ])
+  console.log('line 15', result)
+  return result
 }
-
-export function createUser(user: User) {
-  return db('users').insert(user).returning('*')
-}
-
-export function updateUser(user: User) {
-  return db('users').where({ sub: user.sub }).update(user).returning('*')
+export async function getAllUsers() {
+  const users = await db('users').select([
+    'id',
+    'auth0_id as auth0Id',
+    'username',
+    'first_name as firstName',
+    'surname',
+    'location',
+    'picture',
+    'email',
+  ])
+  return users
 }
 
 export function fetchFeature(title: string, layer: string) {
