@@ -9,11 +9,20 @@ import { useQuery } from '@tanstack/react-query'
 import { getAllUsers } from '../api/apiClient.ts'
 import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
+import ListView from './ListView.tsx'
 
-function HomePage() {
+interface Props {
+  mapView: boolean
+  listView: boolean
+}
+
+function HomePage({ mapView }: Props) {
   const [layer, setLayer] = useState('')
   const [oldLayer, setOldLayer] = useState('')
   const [featureData, setFeatureData] = useState<Feature | null>(null)
+  const [lng, setLng] = useState(136.068)
+  const [lat, setLat] = useState(38.4968)
+  const [zoom, setZoom] = useState(4.7)
   const navigate = useNavigate()
   const { user, isAuthenticated, isLoading } = useAuth0()
 
@@ -61,14 +70,21 @@ function HomePage() {
         changeLayer={handleIconClick}
         setFeatureData={setFeatureData}
       />
-      <div className="map-details">
-        <Map
-          onFeatureClick={handleFeatureClick}
-          currentLayer={layer}
-          oldLayer={oldLayer}
-        />
-        <FeatureDetails featureData={featureData} layer={layer} />
-      </div>
+      {mapView === true ? (
+        <div className="map-details">
+          <Map
+            onFeatureClick={handleFeatureClick}
+            currentLayer={layer}
+            oldLayer={oldLayer}
+            lng={lng}
+            lat={lat}
+            zoom={zoom}
+          />
+          <FeatureDetails featureData={featureData} layer={layer} />
+        </div>
+      ) : (
+        <ListView layer={layer} />
+      )}
     </>
   )
 }

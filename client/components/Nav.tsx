@@ -11,7 +11,15 @@ function Nav() {
     <div className="nav-bar">
       <Profile />
       {user ? (
-        <LogoutButton />
+        <>
+          <Link to="/">
+            <button className="login-button">My Map</button>
+          </Link>
+          <Link to="/list-view">
+            <button className="login-button">My Lists</button>
+          </Link>
+          <LogoutButton />
+        </>
       ) : (
         <div>
           <LoginButton />

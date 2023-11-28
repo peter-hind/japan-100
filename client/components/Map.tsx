@@ -10,14 +10,21 @@ interface Props {
   onFeatureClick: (data: any) => void
   currentLayer: string
   oldLayer: string
+  lng: number
+  lat: number
+  zoom: number
 }
 
-function Map({ onFeatureClick, currentLayer, oldLayer }: Props) {
+function Map({
+  onFeatureClick,
+  currentLayer,
+  oldLayer,
+  lng,
+  lat,
+  zoom,
+}: Props) {
   const mapContainer = useRef<MapContainerRef>(null)
   const map = useRef<MapboxMap | null>(null)
-  const [lng, setLng] = useState(136.068)
-  const [lat, setLat] = useState(38.4968)
-  const [zoom, setZoom] = useState(4.7)
 
   const hasClickListener = useRef(false)
 
@@ -52,10 +59,13 @@ function Map({ onFeatureClick, currentLayer, oldLayer }: Props) {
 
   useEffect(() => {
     if (currentLayer !== '') {
+      console.log(currentLayer)
+      console.log(oldLayer)
       map.current?.on(
         'idle',
         () =>
           oldLayer !== '' &&
+          oldLayer !== currentLayer &&
           map.current?.setLayoutProperty(oldLayer, 'visibility', 'none')
       )
       map.current?.on('idle', () =>

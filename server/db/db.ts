@@ -58,6 +58,10 @@ export async function visitFeature(
     .returning('*')
 }
 
+export async function fetchAllFeatures(layer: string) {
+  return db.select('*').from(`${layer}`)
+}
+
 export async function deleteFeature(
   layer: string,
   currentUser: string,

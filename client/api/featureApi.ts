@@ -11,6 +11,11 @@ export async function getFeature(
   return res.body
 }
 
+export async function getFeatures(layer: string): Promise<Feature[]> {
+  const res = await request.get(`${rootUrl}/${layer}`)
+  return res.body
+}
+
 export async function getVisitorFeatures(
   layer: string,
   sub: string

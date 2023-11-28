@@ -4,6 +4,7 @@ import {
   visitFeature,
   fetchVisitorFeatures,
   deleteFeature,
+  fetchAllFeatures,
 } from '../db/db'
 import checkJwt, { JwtRequest } from '../auth0'
 
@@ -23,6 +24,22 @@ router.get('/:title', async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: 'An error occurred while getting Castles',
+      error: err instanceof Error ? err.message : 'Unknown error',
+    })
+  }
+})
+
+router.get('/', async (req, res) => {
+  try {
+    const castles = await fetchAllFeatures(layer)
+    if (!castles) {
+      res.status(404).json({ message: 'Castles not found' })
+      return
+    }
+    res.status(200).json(castles)
+  } catch (err) {
+    res.status(500).json({
+      message: 'An error occurred while getting castles',
       error: err instanceof Error ? err.message : 'Unknown error',
     })
   }

@@ -4,6 +4,7 @@ import {
   visitFeature,
   fetchVisitorFeatures,
   deleteFeature,
+  fetchAllFeatures,
 } from '../db/db'
 import checkJwt, { JwtRequest } from '../auth0'
 
@@ -23,6 +24,22 @@ router.get('/:title', async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: 'An error occurred while getting Shrines',
+      error: err instanceof Error ? err.message : 'Unknown error',
+    })
+  }
+})
+
+router.get('/', async (req, res) => {
+  try {
+    const shrines = await fetchAllFeatures(layer)
+    if (!shrines) {
+      res.status(404).json({ message: 'Shrines not found' })
+      return
+    }
+    res.status(200).json(shrines)
+  } catch (err) {
+    res.status(500).json({
+      message: 'An error occurred while getting shrines',
       error: err instanceof Error ? err.message : 'Unknown error',
     })
   }

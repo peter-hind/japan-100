@@ -4,6 +4,7 @@ import {
   visitFeature,
   fetchVisitorFeatures,
   deleteFeature,
+  fetchAllFeatures,
 } from '../db/db'
 import checkJwt, { JwtRequest } from '../auth0'
 
@@ -23,6 +24,22 @@ router.get('/:title', async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: 'An error occurred while getting Onsens',
+      error: err instanceof Error ? err.message : 'Unknown error',
+    })
+  }
+})
+
+router.get('/', async (req, res) => {
+  try {
+    const onsens = await fetchAllFeatures(layer)
+    if (!onsens) {
+      res.status(404).json({ message: 'Onsens not found' })
+      return
+    }
+    res.status(200).json(onsens)
+  } catch (err) {
+    res.status(500).json({
+      message: 'An error occurred while getting onsens',
       error: err instanceof Error ? err.message : 'Unknown error',
     })
   }

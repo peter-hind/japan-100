@@ -257,3 +257,35 @@ form {
   align-items: center;
   justify-content: center;
 }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0; /* Add margin for better spacing */
+}
+
+/* Style for table headers */
+th,
+td {
+  border: 1px solid #ddd; /* Border color */
+  padding: 8px; /* Padding for cells */
+  text-align: left; /* Align text to the left in cells */
+}
+
+/* Add a background color to alternate rows for better readability */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover effect for better interactivity */
+tr:hover {
+  background-color: #e0e0e0;
+}
+
+/* Style for visited and not-visited icons */
+.feature-icon {
+  /* width: 20px;
+  height: 20px;
+  line-height: 20px; */
+  text-align: center;
+}
