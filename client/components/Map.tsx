@@ -29,25 +29,8 @@ function Map({
   const hasClickListener = useRef(false)
 
   useEffect(() => {
-    const clickListener = (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
-      if (e.features && e.features.length) {
-        const feature: Feature = e.features[0]
-        console.log(feature)
-        onFeatureClick(feature)
-        const coordinates = feature.geometry.coordinates
-        console.log(coordinates)
-        map.current?.flyTo({
-          center: [coordinates[0], coordinates[1]],
-          zoom: 12,
-          pitch: 75,
-          speed: 0.8,
-          curve: 1,
-        })
-      }
-    }
-
     if (!hasClickListener.current) {
-      map.current?.on('click', currentLayer, clickListener)
+      map.current?.on('click', 'japanhundreds', clickListener)
       hasClickListener.current = true
     }
 
@@ -64,13 +47,9 @@ function Map({
       map.current?.on(
         'idle',
         () =>
-          oldLayer !== '' &&
-          oldLayer !== currentLayer &&
-          map.current?.setLayoutProperty(oldLayer, 'visibility', 'none')
+          oldLayer !== '' && oldLayer !== currentLayer && hideCategory(oldLayer)
       )
-      map.current?.on('idle', () =>
-        map.current?.setLayoutProperty(currentLayer, 'visibility', 'visible')
-      )
+      map.current?.on('idle', () => showCategory(currentLayer))
     }
 
     if (!map.current) {
@@ -80,8 +59,43 @@ function Map({
         center: [lng, lat],
         zoom: zoom,
       })
+      map.current?.on('idle', () => {
+        hideAllFeatures()
+        currentLayer !== '' && showCategory(currentLayer)
+      })
     }
   })
+
+  const clickListener = (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
+    if (e.features && e.features.length) {
+      const feature: Feature = e.features[0]
+      console.log(feature)
+      onFeatureClick(feature)
+      const coordinates = feature.geometry.coordinates
+      console.log(coordinates)
+      map.current?.flyTo({
+        center: [coordinates[0], coordinates[1]],
+        zoom: 12,
+        pitch: 75,
+        speed: 0.8,
+        curve: 1,
+      })
+    }
+  }
+  function hideAllFeatures() {
+    const filter = ['==', 'category', 'hideall']
+    map.current?.setFilter('japanhundreds', filter)
+  }
+
+  function hideCategory(category: string) {
+    const filter = ['!=', 'category', category]
+    map.current?.setFilter('japanhundreds', filter)
+  }
+
+  function showCategory(category: string) {
+    const filter = ['==', 'category', category]
+    map.current?.setFilter('japanhundreds', filter)
+  }
 
   return (
     <>
