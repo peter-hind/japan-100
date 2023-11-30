@@ -4,11 +4,28 @@ import {
   visitFeature,
   fetchVisitorFeatures,
   deleteFeature,
+  fetchAllFeatures,
 } from '../db/db'
 import checkJwt, { JwtRequest } from '../auth0.ts'
 
 const router = express.Router()
 const layer = 'mountains100'
+
+router.get('/', async (req, res) => {
+  try {
+    const mountains = await fetchAllFeatures(layer)
+    if (!mountains) {
+      res.status(404).json({ message: 'Mountains not found' })
+      return
+    }
+    res.status(200).json(mountains)
+  } catch (err) {
+    res.status(500).json({
+      message: 'An error occurred while getting mountains',
+      error: err instanceof Error ? err.message : 'Unknown error',
+    })
+  }
+})
 
 router.get('/:title', async (req, res) => {
   try {

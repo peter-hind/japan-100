@@ -10,37 +10,27 @@ interface Props {
   onFeatureClick: (data: any) => void
   currentLayer: string
   oldLayer: string
+  lng: number
+  lat: number
+  zoom: number
 }
 
-function Map({ onFeatureClick, currentLayer, oldLayer }: Props) {
+function Map({
+  onFeatureClick,
+  currentLayer,
+  oldLayer,
+  lng,
+  lat,
+  zoom,
+}: Props) {
   const mapContainer = useRef<MapContainerRef>(null)
   const map = useRef<MapboxMap | null>(null)
-  const [lng, setLng] = useState(136.068)
-  const [lat, setLat] = useState(38.4968)
-  const [zoom, setZoom] = useState(4.7)
 
   const hasClickListener = useRef(false)
 
   useEffect(() => {
-    const clickListener = (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
-      if (e.features && e.features.length) {
-        const feature: Feature = e.features[0]
-        console.log(feature)
-        onFeatureClick(feature)
-        const coordinates = feature.geometry.coordinates
-        console.log(coordinates)
-        map.current?.flyTo({
-          center: [coordinates[0], coordinates[1]],
-          zoom: 12,
-          pitch: 75,
-          speed: 0.8,
-          curve: 1,
-        })
-      }
-    }
-
     if (!hasClickListener.current) {
-      map.current?.on('click', currentLayer, clickListener)
+      map.current?.on('click', 'japanhundreds', clickListener)
       hasClickListener.current = true
     }
 
@@ -52,15 +42,14 @@ function Map({ onFeatureClick, currentLayer, oldLayer }: Props) {
 
   useEffect(() => {
     if (currentLayer !== '') {
+      console.log(currentLayer)
+      console.log(oldLayer)
       map.current?.on(
         'idle',
         () =>
-          oldLayer !== '' &&
-          map.current?.setLayoutProperty(oldLayer, 'visibility', 'none')
+          oldLayer !== '' && oldLayer !== currentLayer && hideCategory(oldLayer)
       )
-      map.current?.on('idle', () =>
-        map.current?.setLayoutProperty(currentLayer, 'visibility', 'visible')
-      )
+      map.current?.on('idle', () => showCategory(currentLayer))
     }
 
     if (!map.current) {
@@ -70,8 +59,43 @@ function Map({ onFeatureClick, currentLayer, oldLayer }: Props) {
         center: [lng, lat],
         zoom: zoom,
       })
+      map.current?.on('idle', () => {
+        hideAllFeatures()
+        currentLayer !== '' && showCategory(currentLayer)
+      })
     }
   })
+
+  const clickListener = (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
+    if (e.features && e.features.length) {
+      const feature: Feature = e.features[0]
+      console.log(feature)
+      onFeatureClick(feature)
+      const coordinates = feature.geometry.coordinates
+      console.log(coordinates)
+      map.current?.flyTo({
+        center: [coordinates[0], coordinates[1]],
+        zoom: 12,
+        pitch: 75,
+        speed: 0.8,
+        curve: 1,
+      })
+    }
+  }
+  function hideAllFeatures() {
+    const filter = ['==', 'category', 'hideall']
+    map.current?.setFilter('japanhundreds', filter)
+  }
+
+  function hideCategory(category: string) {
+    const filter = ['!=', 'category', category]
+    map.current?.setFilter('japanhundreds', filter)
+  }
+
+  function showCategory(category: string) {
+    const filter = ['==', 'category', category]
+    map.current?.setFilter('japanhundreds', filter)
+  }
 
   return (
     <>
